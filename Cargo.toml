@@ -1,0 +1,50 @@
+[package]
+name = "touchy"
+version = "0.1.0"
+edition = "2024"
+description = "Themeable, touch-friendly UI widgets for data-driven Bevy games"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/iamtomhansen/touchy"
+keywords = ["bevy", "ui", "widgets", "gamedev", "theme"]
+categories = ["game-development", "gui"]
+# Web build stays out of the deployed crate.
+exclude = ["scratch", "wasm"]
+
+[dependencies]
+# GhostNodes are experimental and not yet stable, so check its status on new Bevy version.
+bevy = { version = "0.20", default-features = false, features = [
+    "bevy_ui", "bevy_ui_render", "bevy_ui_widgets", "bevy_render", "bevy_window",
+    "bevy_picking", "ui_picking", "bevy_input_focus", "bevy_gizmos", "bevy_gizmos_render",
+    "ghost_nodes", "keyboard", "mouse", "png", "bevy_log", "std", "multi_threaded",
+] }
+ron = "0.12"
+serde = { version = "1", features = ["derive"] }
+thiserror = "2.0"
+
+[dev-dependencies]
+bevy = { version = "0.20", default-features = false, features = [
+    "bevy_winit", "wayland", "x11", "default_font", "bevy_state",
+    "file_watcher", "system_clipboard", "bevy_sprite", "bevy_sprite_render",
+] }
+
+[profile.dev]
+debug = "line-tables-only"   # backtraces with line numbers, much less to link
+
+[profile.dev.package."*"]
+debug = false                # no debug info for dependencies
+opt-level = 3                # optional: dependencies run fast; built once, then cached
+
+# The showcase offers the premade themes.
+[[example]]
+name = "showcase"
+required-features = ["premade-themes"]
+
+[features]
+default = ["premade-themes"]
+dev = ["bevy/dynamic_linking"]
+# The themes that ship with touchy, compiled in: see `touchy::premade`. Each is the folder
+# of the same name in `premade_themes`, and every file in it goes in with it.
+premade-themes = ["theme-lords", "theme-foundation"]
+theme-lords = []
+theme-foundation = []

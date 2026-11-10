@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Touchy UI Demo</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      outline: none;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+  <script type="module">
+    // Launch the `showcase` example via demo.js.
+    import init from './demo.js';
+    init().catch((error) => {
+      // Don't crash silently if WebGL/WebGPU fails to initialize
+      if (!error.message?.includes("Using exceptions for control flow")) {
+        console.error("Failed to initialize Bevy Wasm app:", error);
+      }
+    });
+    init();
+  </script>
+</body>
+</html>

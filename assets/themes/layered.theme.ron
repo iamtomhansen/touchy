@@ -1,0 +1,58 @@
+// Layered: skins made of Bevy's own layers, with no pictures at all. Each
+// layer is drawn on the node itself, back to front: shadows, fill, gradients,
+// border, then the outline. Colours written as `(shade: ...)` are the token's
+// own, so the palette and every state still apply.
+(
+    colors: {
+        "touchy.palette.accent": "#5B6FD9",
+    },
+    skins: {
+        // Lit from above: the button's own colour, lighter at the top and
+        // darker at the bottom, on a soft drop shadow. Hover and press shade
+        // the whole stack, because every colour in it is the button's own.
+        // Its states borrow this skin, transition and all, so every one of
+        // them eases in over a tenth of a second.
+        "touchy.button.bg": (
+            gradients: [Linear(stops: [(shade: Lighter(0.12)), (shade: Darker(0.12))])],
+            shadows: [(color: "#00000080", offset: (0.0, 2.0), blur: 4.0)],
+            transition: 0.1,
+        ),
+        // A state with a skin of its own replaces the resting skin whole, so
+        // the focused button repeats its gradient and adds an outline in the
+        // accent colour: where the keyboard or a gamepad is, at a glance.
+        "touchy.button.bg:focused": (
+            gradients: [Linear(stops: [(shade: Lighter(0.12)), (shade: Darker(0.12))])],
+            shadows: [(color: "#00000080", offset: (0.0, 2.0), blur: 4.0)],
+            outline: (color: (from: "touchy.palette.accent", shade: Lighter(0.3)), width: 2.0, offset: 2.0),
+            // The colour answers at once; the ring fades in.
+            transition: (outline: 0.25),
+        ),
+        // A gradient border, light at the top and dark at the bottom, over
+        // the flat fill: a bevel without a picture.
+        "touchy.button.secondary.bg": (
+            border: [Linear(stops: [(shade: Lighter(0.3)), (shade: Darker(0.3))])],
+        ),
+        // A faint radial sheen from the top edge. The ghost's own colour is
+        // transparent, so it's written out.
+        "touchy.button.ghost.bg": (
+            gradients: [Radial(center: (0.5, 0.0), stops: [("#ffffff20", 0.0), ("transparent", 0.7)])],
+        ),
+        // A state with a skin of its own: a glow in the accent colour while
+        // hovered. Its own colour, the ghost's hover tint, still fills it.
+        "touchy.button.ghost.bg:hover": (
+            gradients: [Radial(center: (0.5, 0.0), stops: [("#ffffff20", 0.0), ("transparent", 0.7)])],
+            shadows: [(color: (from: "touchy.palette.accent", shade: Alpha(0.35)), blur: 8.0)],
+            transition: (shadows: 0.3),
+        ),
+        // An outline, which takes no space, so it can come and go without
+        // moving anything, and a glow under the thumb.
+        "touchy.slider.thumb": (
+            outline: (color: (from: "touchy.palette.accent"), width: 2.0, offset: 1.0),
+            shadows: [(color: (from: "touchy.palette.accent", shade: Alpha(0.5)), blur: 8.0, spread: 2.0)],
+        ),
+        // Sunk in: darker at the top, as if lit from above.
+        "touchy.slider.track": (
+            gradients: [Linear(stops: [(shade: Darker(0.25)), (shade: Same)])],
+        ),
+    },
+)

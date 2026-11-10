@@ -1,0 +1,18 @@
+// Foundation, the palette: a dark console in teal, with amber for attention.
+// Goes with the Foundation skin, or over any other.
+(
+    colors: {
+        "touchy.palette.accent": "#1F9E8C",
+        "touchy.palette.highlight": "#FFB000",
+        "touchy.palette.surface": "#0E1A1E",
+        "touchy.palette.control": "#24434C",
+        "touchy.palette.edge": "#2F7380",
+        "touchy.palette.text": "#CFF5EE",
+        "touchy.palette.text.muted": "#6FA39B",
+        "touchy.palette.danger": "#A32A24",
+        "touchy.palette.warning": "#FFB000",
+        "touchy.palette.info": "#3FA7D6",
+        "touchy.palette.success": "#4CC26A",
+        "touchy.palette.scrim": "#02080AB3",
+    },
+)

@@ -1,0 +1,36 @@
+// Foundation, the skin: pixel-art panels for a science fiction game. Every
+// picture but the capsule thumb is grey, so a palette tints it: this file says *how* things are drawn,
+// and `palette.theme.ron` (or any other palette) what colours they're drawn in.
+// Image and font paths are beside this file.
+(
+    fonts: {
+        "touchy.palette.font": "Silkscreen-Regular.ttf",
+    },
+    sizes: {
+        // Silkscreen is drawn on an 8-pixel grid: whole multiples stay sharp.
+        // Small print is the same size, since 8 is too small to read.
+        "touchy.palette.text.size": 16.0,
+        "touchy.palette.heading.size": 24.0,
+        "touchy.palette.small.size": 16.0,
+        "touchy.palette.control.text.size": 16.0,
+        // Chamfered corners are in the pictures.
+        "touchy.palette.corner_radius": 0.0,
+        "touchy.palette.control.corner_radius": 0.0,
+    },
+    skins: {
+        // Panels, cards, menus and toasts: a bezel with scanlines.
+        "touchy.skin.surface": (image: "surface.png", slice: 5.0),
+        // Buttons and interactables: a bright surface, inverted when pressed.
+        "touchy.skin.raised": (image: "raised.png", slice: 4.0),
+        "touchy.skin.raised:pressed": (image: "raised_pressed.png", slice: 4.0),
+        // Fields and tracks: a dim inset.
+        "touchy.skin.sunken": (image: "sunken.png", slice: 3.0),
+        // Every thumb: a chamfered pip.
+        "touchy.skin.knob": (image: "knob.png", slice: 3.0),
+        "touchy.skin.mark": (image: "mark.png"),
+        // The capsule's thumb is a sprite sheet of eight 27-pixel frames, cyan to violet: it
+        // plays through as the thumb glides across. It's drawn in its own colours, so
+        // `tinted: false` keeps the palette off it.
+        "touchy.capsule.thumb": (image: "flip_orb.png", frames: (columns: 8), tinted: false),
+    },
+)

@@ -1,0 +1,26 @@
+// Terminal: a font as well as colours. Every widget's text follows the
+// palette font, so the one entry under `fonts` sets the typeface everywhere.
+// Font paths work like skin images; the leading `/` starts from the asset
+// folder, where fonts sit beside `themes/` so every theme can share them.
+(
+    colors: {
+        "touchy.palette.accent": "#2FA84F",
+        "touchy.palette.highlight": "#E8B33A",
+        "touchy.palette.surface": "#0B0F0C",
+        "touchy.palette.control": "#1C2A20",
+        "touchy.palette.edge": "#2E4A36",
+        "touchy.palette.text": "#7CF29A",
+        "touchy.palette.text.muted": "#3F8F57",
+    },
+    sizes: {
+        // This face runs small, so the family's text is nudged up. Every
+        // button variant follows the family size.
+        "touchy.button.font_size": 14.0,
+        "touchy.checkbox.font_size": 14.0,
+    },
+    fonts: {
+        "touchy.palette.font": "/fonts/TerminessBoldItalic.ttf",
+        // Widgets can opt out: checkbox labels keep the original own font.
+        "touchy.checkbox.font": "default",
+    },
+)

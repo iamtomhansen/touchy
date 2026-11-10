@@ -1,0 +1,702 @@
+// Every touchy theme token at its default. Generated from the code by
+// touchy's tests: don't edit it here.
+//
+// To start a theme, copy this file, change what you want and delete the rest:
+// anything a theme leaves out keeps its default. Most tokens derive from the
+// `touchy.palette` group, colours and font, so changing those restyles every
+// widget; most skins follow the `touchy.skin` roles the same way. Every section
+// is optional.
+//
+// TOKENS
+//   "name" is a token; "name:state" is the token in a state. A widget is in
+//   one state at a time, the first of these that's true of it:
+//     disabled   it can't be used
+//     pressed    it's being clicked, tapped or held
+//     focused    the keyboard or a gamepad is on it (text fields: any focus)
+//     hover      the cursor is over it
+//   A state with no entry of its own is its resting token, shaded by the
+//   state's entry in `state_shades`.
+//
+// colors
+//   "#3873cc", "#3873cc80" with alpha, or "transparent"
+//   (from: "token") follows another colour, with an optional shade:
+//     shade: Same          as it is
+//     shade: Lighter(0.1)  a tenth of the way to white
+//     shade: Darker(0.1)   a tenth of the way to black
+//     shade: Alpha(0.5)    the same colour, half see-through
+//     shade: Contrast      black or white, whichever reads better on it
+// sizes
+//   6.0 pixels, or (from: "token") with an optional scale: 2.0
+// fonts
+//   "Inter.ttf" beside this file, "/fonts/Inter.ttf" from the asset folder,
+//   "default" for Bevy's own, or (from: "token")
+// state_shades
+//   A state and the shade its tokens take: "hover": Lighter(0.08)
+// skins
+//   (from: "token") draws another token's skin, tinted by this one's colour,
+//   as every widget's parts follow a `touchy.skin` role. A role has no skin
+//   until a theme gives it one, so every widget draws its flat colour.
+//   Otherwise, a colour token drawn as a stack of layers, all optional, back to front:
+//     shadows: [(color: ..., offset: (0.0, 2.0), blur: 4.0, spread: 1.0)]
+//       in pixels, each over the one before; with no offset, a glow
+//     fill: a colour under the rest: the token's own, unless there's an image
+//     gradients: [...] over the fill, each over the one before
+//     border: [...] gradients on the node's border
+//     image: "panel.png", the picture, beside this file or from "/...":
+//       slice: 5.0, or (8.0, 3.0) for left and right, top and bottom: its
+//         corners keep their size, its edges and middle tile; sides: Stretch,
+//         center: Stretch and corner_scale: 2.0 change how
+//       tile: X, Y or Both repeats the whole picture
+//       frames: (columns: 5, rows: 1, fps: 12.0) cuts a sprite sheet: the
+//         widget picks the frame, as a slider by its value, unless fps loops it
+//       flip: X, Y or Both mirrors it
+//       tinted: false keeps its own colours instead of the token's
+//       inside_border: true draws it inside the border
+//     outline: (color: ..., width: 2.0, offset: 1.0) a line outside the
+//       border, which takes no space
+//   and how the layers change into this skin as a widget changes state:
+//     transition: 0.15 eases every layer over 0.15 seconds; (shadows: 0.5,
+//       outline: 0.2) times each layer on its own, among fill, gradients,
+//       border, shadows, outline and tint (the picture's colour), and the
+//       rest change at once
+//   A gradient is Linear(angle: 180.0, stops: [...]), in degrees clockwise
+//   from pointing up (180, down, if left out), or Radial(center: (0.5, 0.5),
+//   shape: FarthestCorner, stops: [...]), from fractions of the node's width
+//   and height; a shape is FarthestCorner, ClosestCorner, FarthestSide,
+//   ClosestSide, Circle(20.0) or Ellipse(30.0, 20.0). A stop is a colour, or
+//   (colour, 0.25) to place it a quarter of the way along. A colour on its own
+//   is a flat gradient: border: ["#ffffff"] is a border colour.
+//   A colour in a skin is written as in `colors`, or (shade: Lighter(0.1)) for
+//   the skin's own token's colour, so it follows the palette and every state.
+//   A state can have a skin of its own, which replaces the resting token's
+//   whole; without one, it borrows the resting token's, and every colour in
+//   it takes the state's shade. So a transition on the resting skin covers
+//   every state that borrows it, and one on a state's own skin covers
+//   changing into that state.
+//
+// For example:
+//    (
+//        colors: {
+//            "touchy.palette.accent": "#5b6fd9",
+//            "touchy.button.border.light:hover": (from: "touchy.palette.accent", shade: Lighter(0.2)),
+//        },
+//        sizes: {
+//            "touchy.slider.corner_radius": (from: "touchy.button.corner_radius", scale: 2.0),
+//        },
+//        skins: {
+//            "touchy.button.bg": (
+//                gradients: [Linear(stops: [(shade: Lighter(0.12)), (shade: Darker(0.12))])],
+//                shadows: [(color: "#00000080", offset: (0.0, 2.0), blur: 4.0)],
+//            ),
+//            "touchy.joystick.thumb": (image: "spinner.png", frames: (columns: 8, fps: 12.0)),
+//            "touchy.slider.thumb:focused": (
+//                outline: (color: (from: "touchy.palette.accent"), width: 2.0, offset: 1.0),
+//                shadows: [(color: (from: "touchy.palette.accent", shade: Alpha(0.5)), blur: 8.0)],
+//                transition: (shadows: 0.5),
+//            ),
+//        },
+//        state_shades: {
+//            "focused": Lighter(0.15),
+//        },
+//    )
+//
+// Regenerate with: TOUCHY_UPDATE_REFERENCE=1 cargo test -p touchy reference
+(
+    colors: {
+        // touchy.adorner
+        "touchy.adorner.outline.fill": (from: "touchy.palette.highlight", shade: Alpha(0.06)),
+        "touchy.adorner.outline.line": (from: "touchy.palette.highlight", shade: Alpha(0.5)),
+
+        // touchy.button
+        "touchy.button.bg": (from: "touchy.palette.accent"),
+        "touchy.button.border.dark": (from: "touchy.button.bg", shade: Darker(0.15)),
+        "touchy.button.border.light": (from: "touchy.button.bg", shade: Lighter(0.15)),
+        "touchy.button.border.light:focused": (from: "touchy.palette.highlight"),
+        "touchy.button.border.light:hover": (from: "touchy.palette.highlight"),
+        "touchy.button.danger.bg": (from: "touchy.palette.danger"),
+        "touchy.button.danger.border.dark": (from: "touchy.button.danger.bg", shade: Darker(0.15)),
+        "touchy.button.danger.border.light": (from: "touchy.button.danger.bg", shade: Lighter(0.15)),
+        "touchy.button.danger.border.light:focused": (from: "touchy.palette.highlight"),
+        "touchy.button.danger.border.light:hover": (from: "touchy.palette.highlight"),
+        "touchy.button.danger.text": (from: "touchy.button.danger.bg", shade: Contrast),
+        "touchy.button.danger.text:disabled": (from: "touchy.palette.text.muted"),
+        "touchy.button.ghost.bg": "transparent",
+        "touchy.button.ghost.bg:hover": (from: "touchy.palette.control", shade: Alpha(0.4)),
+        "touchy.button.ghost.bg:pressed": (from: "touchy.palette.control", shade: Darker(0.08)),
+        "touchy.button.ghost.border.dark": (from: "touchy.button.ghost.bg", shade: Darker(0.15)),
+        "touchy.button.ghost.border.light": (from: "touchy.button.ghost.bg", shade: Lighter(0.15)),
+        "touchy.button.ghost.border.light:focused": (from: "touchy.palette.highlight"),
+        "touchy.button.ghost.border.light:hover": (from: "touchy.palette.highlight"),
+        "touchy.button.ghost.text": (from: "touchy.palette.text"),
+        "touchy.button.ghost.text:disabled": (from: "touchy.palette.text.muted"),
+        "touchy.button.secondary.bg": (from: "touchy.palette.control"),
+        "touchy.button.secondary.border.dark": (from: "touchy.button.secondary.bg", shade: Darker(0.15)),
+        "touchy.button.secondary.border.light": (from: "touchy.button.secondary.bg", shade: Lighter(0.15)),
+        "touchy.button.secondary.border.light:focused": (from: "touchy.palette.highlight"),
+        "touchy.button.secondary.border.light:hover": (from: "touchy.palette.highlight"),
+        "touchy.button.secondary.text": (from: "touchy.button.secondary.bg", shade: Contrast),
+        "touchy.button.secondary.text:disabled": (from: "touchy.palette.text.muted"),
+        "touchy.button.text": (from: "touchy.button.bg", shade: Contrast),
+        "touchy.button.text:disabled": (from: "touchy.palette.text.muted"),
+
+        // touchy.canvas
+        "touchy.canvas.bg": "transparent",
+
+        // touchy.capsule
+        "touchy.capsule.border": (from: "touchy.palette.edge"),
+        "touchy.capsule.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.capsule.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.capsule.label.active": (from: "touchy.palette.text"),
+        "touchy.capsule.label.inactive": (from: "touchy.palette.text.muted"),
+        "touchy.capsule.thumb": (from: "touchy.palette.text"),
+        "touchy.capsule.track.off": (from: "touchy.palette.control"),
+        "touchy.capsule.track.on": (from: "touchy.palette.accent"),
+
+        // touchy.checkbox
+        "touchy.checkbox.border": (from: "touchy.palette.edge"),
+        "touchy.checkbox.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.checkbox.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.checkbox.box": (from: "touchy.palette.surface"),
+        "touchy.checkbox.box.checked": (from: "touchy.palette.accent"),
+        "touchy.checkbox.label": (from: "touchy.palette.text"),
+        "touchy.checkbox.mark": (from: "touchy.checkbox.box.checked", shade: Contrast),
+
+        // touchy.combo
+        "touchy.combo.bg": (from: "touchy.text_input.bg"),
+        "touchy.combo.border": (from: "touchy.text_input.border"),
+        "touchy.combo.border:focused": (from: "touchy.text_input.border:focused"),
+        "touchy.combo.border:hover": (from: "touchy.text_input.border:hover"),
+        "touchy.combo.caret": (from: "touchy.text_input.caret"),
+        "touchy.combo.chevron": (from: "touchy.dropdown.chevron"),
+        "touchy.combo.option": (from: "touchy.dropdown.option"),
+        "touchy.combo.option:hover": (from: "touchy.dropdown.option:hover"),
+        "touchy.combo.option_chosen": (from: "touchy.dropdown.option_chosen"),
+        "touchy.combo.option_text": (from: "touchy.dropdown.text"),
+        "touchy.combo.option_text:disabled": (from: "touchy.dropdown.text:disabled"),
+        "touchy.combo.placeholder": (from: "touchy.text_input.placeholder"),
+        "touchy.combo.selection": (from: "touchy.text_input.selection"),
+        "touchy.combo.text": (from: "touchy.text_input.text"),
+
+        // touchy.dpad
+        "touchy.dpad.arm": (from: "touchy.palette.accent"),
+        "touchy.dpad.bg": (from: "touchy.palette.control"),
+        "touchy.dpad.border": (from: "touchy.palette.edge"),
+        "touchy.dpad.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.dpad.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.dpad.border:pressed": (from: "touchy.palette.highlight"),
+
+        // touchy.dropdown
+        "touchy.dropdown.bg": (from: "touchy.palette.control"),
+        "touchy.dropdown.bg:disabled": (from: "touchy.palette.control", shade: Alpha(0.4)),
+        "touchy.dropdown.bg:pressed": (from: "touchy.palette.control"),
+        "touchy.dropdown.border": (from: "touchy.palette.edge"),
+        "touchy.dropdown.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.dropdown.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.dropdown.border:pressed": (from: "touchy.palette.highlight"),
+        "touchy.dropdown.chevron": (from: "touchy.palette.text.muted"),
+        "touchy.dropdown.option": "transparent",
+        "touchy.dropdown.option:hover": (from: "touchy.palette.highlight", shade: Alpha(0.2)),
+        "touchy.dropdown.option_chosen": (from: "touchy.palette.accent", shade: Alpha(0.35)),
+        "touchy.dropdown.placeholder": (from: "touchy.palette.text.muted"),
+        "touchy.dropdown.text": (from: "touchy.palette.text"),
+        "touchy.dropdown.text:disabled": (from: "touchy.palette.text.muted", shade: Alpha(0.4)),
+
+        // touchy.gearshift
+        "touchy.gearshift.detent": (from: "touchy.palette.text.muted"),
+        "touchy.gearshift.fill": (from: "touchy.palette.accent"),
+        "touchy.gearshift.thumb": (from: "touchy.palette.text"),
+        "touchy.gearshift.thumb.border": (from: "touchy.palette.text.muted"),
+        "touchy.gearshift.thumb.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.gearshift.thumb.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.gearshift.thumb.border:pressed": (from: "touchy.palette.highlight"),
+        "touchy.gearshift.track": (from: "touchy.palette.surface"),
+        "touchy.gearshift.track.border": (from: "touchy.palette.edge"),
+
+        // touchy.grabber
+        "touchy.grabber.corner.mark": (from: "touchy.grabber.mark"),
+        "touchy.grabber.corner.mark:disabled": (from: "touchy.grabber.mark:disabled"),
+        "touchy.grabber.corner.mark:hover": (from: "touchy.grabber.mark:hover"),
+        "touchy.grabber.corner.mark:pressed": (from: "touchy.grabber.mark:pressed"),
+        "touchy.grabber.mark": (from: "touchy.palette.text.muted"),
+        "touchy.grabber.mark:disabled": (from: "touchy.palette.text.muted", shade: Alpha(0.35)),
+        "touchy.grabber.mark:hover": (from: "touchy.palette.highlight"),
+        "touchy.grabber.mark:pressed": (from: "touchy.palette.highlight"),
+
+        // touchy.grid
+        "touchy.grid.bg": (from: "touchy.palette.surface"),
+        "touchy.grid.border": (from: "touchy.palette.edge"),
+        "touchy.grid.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.grid.cell": "transparent",
+        "touchy.grid.cell:hover": (from: "touchy.palette.text", shade: Alpha(0.06)),
+        "touchy.grid.chosen": (from: "touchy.palette.accent"),
+        "touchy.grid.text": (from: "touchy.palette.text.muted"),
+        "touchy.grid.text_chosen": (from: "touchy.grid.chosen", shade: Contrast),
+
+        // touchy.joystick
+        "touchy.joystick.bg": (from: "touchy.palette.surface"),
+        "touchy.joystick.border": (from: "touchy.palette.edge"),
+        "touchy.joystick.dead_zone": (from: "touchy.palette.text.muted", shade: Alpha(0.5)),
+        "touchy.joystick.thumb": (from: "touchy.palette.control"),
+        "touchy.joystick.thumb.border": (from: "touchy.palette.text.muted"),
+        "touchy.joystick.thumb.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.joystick.thumb.border:pressed": (from: "touchy.palette.highlight"),
+
+        // touchy.menu
+        "touchy.menu.bg": "transparent",
+        "touchy.menu.bg:disabled": "transparent",
+        "touchy.menu.bg:hover": (from: "touchy.palette.control", shade: Alpha(0.6)),
+        "touchy.menu.bg:pressed": (from: "touchy.palette.control"),
+        "touchy.menu.border": "transparent",
+        "touchy.menu.chevron": (from: "touchy.dropdown.chevron"),
+        "touchy.menu.option": (from: "touchy.dropdown.option"),
+        "touchy.menu.option:hover": (from: "touchy.dropdown.option:hover"),
+        "touchy.menu.option_chosen": (from: "touchy.dropdown.option_chosen"),
+        "touchy.menu.placeholder": (from: "touchy.dropdown.placeholder"),
+        "touchy.menu.text": (from: "touchy.dropdown.text"),
+        "touchy.menu.text:disabled": (from: "touchy.dropdown.text:disabled"),
+
+        // touchy.meter
+        "touchy.meter.fill": (from: "touchy.palette.accent"),
+        "touchy.meter.track": (from: "touchy.palette.control"),
+
+        // touchy.number_input
+        "touchy.number_input.bg": (from: "touchy.text_input.bg"),
+        "touchy.number_input.border": (from: "touchy.text_input.border"),
+        "touchy.number_input.border:focused": (from: "touchy.text_input.border:focused"),
+        "touchy.number_input.border:hover": (from: "touchy.text_input.border:hover"),
+        "touchy.number_input.caret": (from: "touchy.text_input.caret"),
+        "touchy.number_input.placeholder": (from: "touchy.text_input.placeholder"),
+        "touchy.number_input.selection": (from: "touchy.text_input.selection"),
+        "touchy.number_input.step.bg": (from: "touchy.palette.control"),
+        "touchy.number_input.step.border.dark": (from: "touchy.number_input.step.bg", shade: Darker(0.15)),
+        "touchy.number_input.step.border.light": (from: "touchy.number_input.step.bg", shade: Lighter(0.15)),
+        "touchy.number_input.step.border.light:focused": (from: "touchy.palette.highlight"),
+        "touchy.number_input.step.border.light:hover": (from: "touchy.palette.highlight"),
+        "touchy.number_input.step.text": (from: "touchy.number_input.step.bg", shade: Contrast),
+        "touchy.number_input.step.text:disabled": (from: "touchy.palette.text.muted"),
+        "touchy.number_input.text": (from: "touchy.text_input.text"),
+
+        // touchy.palette
+        "touchy.palette.accent": "#3873CC",
+        "touchy.palette.bullet": (from: "touchy.palette.text.muted"),
+        "touchy.palette.control": "#424754",
+        "touchy.palette.danger": "#8C2424",
+        "touchy.palette.edge": "#4D576B",
+        "touchy.palette.highlight": "#F2C740",
+        "touchy.palette.info": "#408CD9",
+        "touchy.palette.scrim": "#050A14B3",
+        "touchy.palette.success": "#40D973",
+        "touchy.palette.surface": "#1A1F29",
+        "touchy.palette.text": "#F0F2F7",
+        "touchy.palette.text.muted": "#949EB3",
+        "touchy.palette.warning": "#D9BF40",
+
+        // touchy.panel
+        "touchy.panel.bg": (from: "touchy.palette.surface"),
+        "touchy.panel.border": (from: "touchy.palette.edge"),
+
+        // touchy.plot
+        "touchy.plot.axis": (from: "touchy.palette.edge"),
+        "touchy.plot.grid": (from: "touchy.palette.edge", shade: Alpha(0.35)),
+        "touchy.plot.label": (from: "touchy.palette.text.muted"),
+        "touchy.plot.pointer": (from: "touchy.palette.text.muted"),
+        "touchy.plot.series.1": (from: "touchy.palette.accent"),
+        "touchy.plot.series.2": (from: "touchy.palette.highlight"),
+        "touchy.plot.series.3": "#59C7B8",
+        "touchy.plot.series.4": "#DB739E",
+        "touchy.plot.series.5": "#8CC761",
+        "touchy.plot.series.6": "#AD8FEB",
+
+        // touchy.popover
+        "touchy.popover.bg": (from: "touchy.palette.surface"),
+        "touchy.popover.border": (from: "touchy.palette.edge"),
+
+        // touchy.radial
+        "touchy.radial.center": (from: "touchy.palette.control"),
+        "touchy.radial.center_border": (from: "touchy.palette.edge"),
+        "touchy.radial.mark": (from: "touchy.palette.highlight"),
+        "touchy.radial.placeholder": (from: "touchy.palette.text.muted"),
+        "touchy.radial.ring": (from: "touchy.palette.surface"),
+        "touchy.radial.scrim": "transparent",
+        "touchy.radial.separator": (from: "touchy.palette.edge"),
+        "touchy.radial.text": (from: "touchy.palette.text"),
+        "touchy.radial.text:disabled": (from: "touchy.palette.text.muted", shade: Alpha(0.4)),
+        "touchy.radial.wedge_chosen": (from: "touchy.palette.accent", shade: Alpha(0.3)),
+        "touchy.radial.wedge_highlighted": (from: "touchy.palette.highlight", shade: Alpha(0.35)),
+
+        // touchy.scroll_area
+        "touchy.scroll_area.thumb": (from: "touchy.palette.text.muted", shade: Alpha(0.5)),
+        "touchy.scroll_area.thumb:hover": (from: "touchy.palette.highlight"),
+        "touchy.scroll_area.thumb:pressed": (from: "touchy.palette.highlight"),
+        "touchy.scroll_area.track": "transparent",
+
+        // touchy.scrubber
+        "touchy.scrubber.area.bg": (from: "touchy.palette.surface"),
+        "touchy.scrubber.area.border": (from: "touchy.palette.edge"),
+        "touchy.scrubber.area.border:pressed": (from: "touchy.palette.highlight"),
+        "touchy.scrubber.label": (from: "touchy.palette.text.muted"),
+        "touchy.scrubber.step.bg": (from: "touchy.palette.control"),
+        "touchy.scrubber.step.border.dark": (from: "touchy.scrubber.step.bg", shade: Darker(0.15)),
+        "touchy.scrubber.step.border.light": (from: "touchy.scrubber.step.bg", shade: Lighter(0.15)),
+        "touchy.scrubber.step.border.light:focused": (from: "touchy.palette.highlight"),
+        "touchy.scrubber.step.border.light:hover": (from: "touchy.palette.highlight"),
+        "touchy.scrubber.step.text": (from: "touchy.scrubber.step.bg", shade: Contrast),
+        "touchy.scrubber.step.text:disabled": (from: "touchy.palette.text.muted"),
+        "touchy.scrubber.value": (from: "touchy.palette.text"),
+
+        // touchy.section
+        "touchy.section.chevron": (from: "touchy.palette.text.muted"),
+        "touchy.section.header_bg": "transparent",
+        "touchy.section.header_bg:hover": (from: "touchy.palette.control"),
+        "touchy.section.header_bg:pressed": (from: "touchy.palette.control", shade: Lighter(0.1)),
+        "touchy.section.title": (from: "touchy.palette.text"),
+
+        // touchy.segmented
+        "touchy.segmented.bg": (from: "touchy.palette.surface"),
+        "touchy.segmented.border": (from: "touchy.palette.edge"),
+        "touchy.segmented.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.segmented.highlight": (from: "touchy.palette.accent"),
+        "touchy.segmented.segment": "transparent",
+        "touchy.segmented.segment:hover": (from: "touchy.palette.text", shade: Alpha(0.06)),
+        "touchy.segmented.text": (from: "touchy.palette.text.muted"),
+        "touchy.segmented.text_lit": (from: "touchy.segmented.highlight", shade: Contrast),
+
+        // touchy.skin
+        "touchy.skin.knob": (from: "touchy.palette.accent"),
+        "touchy.skin.mark": (from: "touchy.palette.text"),
+        "touchy.skin.raised": (from: "touchy.palette.control"),
+        "touchy.skin.sunken": (from: "touchy.palette.surface", shade: Darker(0.04)),
+        "touchy.skin.surface": (from: "touchy.palette.surface"),
+
+        // touchy.slider
+        "touchy.slider.fill": (from: "touchy.palette.accent"),
+        "touchy.slider.thumb": (from: "touchy.palette.text"),
+        "touchy.slider.thumb.border": (from: "touchy.palette.text.muted"),
+        "touchy.slider.thumb.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.slider.thumb.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.slider.thumb.border:pressed": (from: "touchy.palette.highlight"),
+        "touchy.slider.track": (from: "touchy.palette.surface"),
+        "touchy.slider.track.border": (from: "touchy.palette.edge"),
+
+        // touchy.text_input
+        "touchy.text_input.bg": (from: "touchy.palette.surface"),
+        "touchy.text_input.border": (from: "touchy.palette.edge"),
+        "touchy.text_input.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.text_input.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.text_input.caret": (from: "touchy.palette.text"),
+        "touchy.text_input.placeholder": (from: "touchy.palette.text.muted"),
+        "touchy.text_input.selection": (from: "touchy.palette.accent", shade: Alpha(0.45)),
+        "touchy.text_input.text": (from: "touchy.palette.text"),
+
+        // touchy.toast
+        "touchy.toast.error.bg": "#401414",
+        "touchy.toast.error.border": (from: "touchy.palette.danger", shade: Lighter(0.17)),
+        "touchy.toast.error.text": (from: "touchy.toast.error.border", shade: Lighter(0.22)),
+        "touchy.toast.info.bg": "#142640",
+        "touchy.toast.info.border": (from: "touchy.palette.info"),
+        "touchy.toast.info.text": (from: "touchy.toast.info.border", shade: Lighter(0.22)),
+        "touchy.toast.success.bg": "#14401F",
+        "touchy.toast.success.border": (from: "touchy.palette.success"),
+        "touchy.toast.success.text": (from: "touchy.toast.success.border", shade: Lighter(0.22)),
+        "touchy.toast.warning.bg": "#403814",
+        "touchy.toast.warning.border": (from: "touchy.palette.warning"),
+        "touchy.toast.warning.text": (from: "touchy.toast.warning.border", shade: Lighter(0.22)),
+
+        // touchy.toolbar
+        "touchy.toolbar.bg": (from: "touchy.palette.surface"),
+        "touchy.toolbar.border": (from: "touchy.palette.edge"),
+
+        // touchy.tooltip
+        "touchy.tooltip.bg": (from: "touchy.palette.surface", shade: Alpha(0.95)),
+        "touchy.tooltip.border.dark": (from: "touchy.palette.surface"),
+        "touchy.tooltip.border.light": (from: "touchy.palette.edge"),
+        "touchy.tooltip.hotkey.accent": (from: "touchy.palette.highlight"),
+        "touchy.tooltip.hotkey.bg": (from: "touchy.palette.control", shade: Alpha(0.95)),
+        "touchy.tooltip.text": (from: "touchy.palette.text"),
+
+        // touchy.transport
+        "touchy.transport.clock": (from: "touchy.palette.text"),
+        "touchy.transport.marker": (from: "touchy.palette.highlight"),
+        "touchy.transport.status": (from: "touchy.palette.text.muted"),
+        "touchy.transport.track.fill": (from: "touchy.palette.accent"),
+        "touchy.transport.track.thumb": (from: "touchy.palette.text"),
+        "touchy.transport.track.thumb.border": (from: "touchy.palette.text.muted"),
+        "touchy.transport.track.thumb.border:focused": (from: "touchy.palette.highlight"),
+        "touchy.transport.track.thumb.border:hover": (from: "touchy.palette.highlight"),
+        "touchy.transport.track.thumb.border:pressed": (from: "touchy.palette.highlight"),
+        "touchy.transport.track.track": (from: "touchy.palette.surface"),
+        "touchy.transport.track.track.border": (from: "touchy.palette.edge"),
+    },
+    sizes: {
+        // touchy.adorner
+        "touchy.adorner.outline.corner_radius": 6.0,
+
+        // touchy.button
+        "touchy.button.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.button.danger.corner_radius": (from: "touchy.button.corner_radius"),
+        "touchy.button.danger.font_size": (from: "touchy.button.font_size"),
+        "touchy.button.danger.icon_size": (from: "touchy.button.icon_size"),
+        "touchy.button.font_size": (from: "touchy.palette.control.text.size"),
+        "touchy.button.ghost.corner_radius": (from: "touchy.button.corner_radius"),
+        "touchy.button.ghost.font_size": (from: "touchy.button.font_size"),
+        "touchy.button.ghost.icon_size": (from: "touchy.button.icon_size"),
+        "touchy.button.icon_size": 15.0,
+        "touchy.button.secondary.corner_radius": (from: "touchy.button.corner_radius"),
+        "touchy.button.secondary.font_size": (from: "touchy.button.font_size"),
+        "touchy.button.secondary.icon_size": (from: "touchy.button.icon_size"),
+
+        // touchy.capsule
+        "touchy.capsule.font_size": (from: "touchy.palette.small.size"),
+
+        // touchy.checkbox
+        "touchy.checkbox.corner_radius": (from: "touchy.palette.control.corner_radius", scale: 0.75),
+        "touchy.checkbox.font_size": (from: "touchy.palette.control.text.size"),
+
+        // touchy.combo
+        "touchy.combo.corner_radius": (from: "touchy.text_input.corner_radius"),
+        "touchy.combo.font_size": (from: "touchy.text_input.font_size"),
+
+        // touchy.dpad
+        "touchy.dpad.corner_radius": (from: "touchy.palette.control.corner_radius"),
+
+        // touchy.dropdown
+        "touchy.dropdown.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.dropdown.font_size": (from: "touchy.palette.control.text.size"),
+
+        // touchy.gearshift
+        "touchy.gearshift.corner_radius": (from: "touchy.palette.control.corner_radius"),
+
+        // touchy.grabber
+        "touchy.grabber.corner.skin_size": (from: "touchy.grabber.skin_size"),
+        "touchy.grabber.skin_size": 16.0,
+
+        // touchy.grid
+        "touchy.grid.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.grid.font_size": (from: "touchy.palette.small.size"),
+
+        // touchy.menu
+        "touchy.menu.corner_radius": (from: "touchy.dropdown.corner_radius"),
+        "touchy.menu.font_size": (from: "touchy.dropdown.font_size"),
+
+        // touchy.meter
+        "touchy.meter.corner_radius": (from: "touchy.palette.control.corner_radius", scale: 0.75),
+
+        // touchy.number_input
+        "touchy.number_input.corner_radius": (from: "touchy.text_input.corner_radius"),
+        "touchy.number_input.font_size": (from: "touchy.text_input.font_size"),
+        "touchy.number_input.step.corner_radius": (from: "touchy.button.corner_radius"),
+        "touchy.number_input.step.font_size": (from: "touchy.button.font_size"),
+        "touchy.number_input.step.icon_size": (from: "touchy.button.icon_size"),
+
+        // touchy.palette
+        "touchy.palette.control.corner_radius": 4.0,
+        "touchy.palette.control.text.size": 13.0,
+        "touchy.palette.corner_radius": 6.0,
+        "touchy.palette.heading.size": (from: "touchy.palette.text.size", scale: 1.5),
+        "touchy.palette.small.size": (from: "touchy.palette.text.size", scale: 0.85),
+        "touchy.palette.text.size": 14.0,
+
+        // touchy.panel
+        "touchy.panel.corner_radius": (from: "touchy.palette.corner_radius"),
+
+        // touchy.plot
+        "touchy.plot.bar_corner_radius": 2.0,
+        "touchy.plot.bar_fill": 0.7,
+        "touchy.plot.font_size": (from: "touchy.palette.small.size"),
+
+        // touchy.popover
+        "touchy.popover.corner_radius": (from: "touchy.palette.corner_radius"),
+
+        // touchy.radial
+        "touchy.radial.font_size": (from: "touchy.palette.control.text.size"),
+
+        // touchy.scroll_area
+        "touchy.scroll_area.bar_width": 6.0,
+
+        // touchy.scrubber
+        "touchy.scrubber.corner_radius": (from: "touchy.palette.control.corner_radius", scale: 0.5),
+        "touchy.scrubber.font_size": (from: "touchy.palette.small.size"),
+        "touchy.scrubber.step.corner_radius": (from: "touchy.button.corner_radius"),
+        "touchy.scrubber.step.font_size": (from: "touchy.button.font_size"),
+        "touchy.scrubber.step.icon_size": (from: "touchy.button.icon_size"),
+
+        // touchy.section
+        "touchy.section.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.section.title_size": (from: "touchy.palette.control.text.size"),
+
+        // touchy.segmented
+        "touchy.segmented.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.segmented.font_size": (from: "touchy.palette.small.size"),
+
+        // touchy.slider
+        "touchy.slider.corner_radius": (from: "touchy.palette.control.corner_radius"),
+
+        // touchy.text_input
+        "touchy.text_input.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.text_input.font_size": (from: "touchy.palette.control.text.size"),
+
+        // touchy.toast
+        "touchy.toast.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.toast.font_size": (from: "touchy.palette.control.text.size"),
+
+        // touchy.tooltip
+        "touchy.tooltip.corner_radius": (from: "touchy.palette.control.corner_radius"),
+        "touchy.tooltip.font_size": (from: "touchy.palette.small.size"),
+        "touchy.tooltip.hotkey.font_size": (from: "touchy.palette.small.size"),
+
+        // touchy.transport
+        "touchy.transport.clock.font_size": 22.0,
+        "touchy.transport.status.font_size": (from: "touchy.palette.small.size"),
+        "touchy.transport.track.corner_radius": (from: "touchy.palette.control.corner_radius"),
+    },
+    fonts: {
+        // touchy.button
+        "touchy.button.danger.font": (from: "touchy.button.font"),
+        "touchy.button.font": (from: "touchy.palette.font"),
+        "touchy.button.ghost.font": (from: "touchy.button.font"),
+        "touchy.button.secondary.font": (from: "touchy.button.font"),
+
+        // touchy.capsule
+        "touchy.capsule.font": (from: "touchy.palette.font"),
+
+        // touchy.checkbox
+        "touchy.checkbox.font": (from: "touchy.palette.font"),
+
+        // touchy.combo
+        "touchy.combo.font": (from: "touchy.text_input.font"),
+
+        // touchy.dropdown
+        "touchy.dropdown.font": (from: "touchy.palette.font"),
+
+        // touchy.grid
+        "touchy.grid.font": (from: "touchy.palette.font"),
+
+        // touchy.menu
+        "touchy.menu.font": (from: "touchy.dropdown.font"),
+
+        // touchy.number_input
+        "touchy.number_input.font": (from: "touchy.text_input.font"),
+        "touchy.number_input.step.font": (from: "touchy.button.font"),
+
+        // touchy.palette
+        "touchy.palette.font": "default",
+
+        // touchy.radial
+        "touchy.radial.font": (from: "touchy.palette.font"),
+
+        // touchy.scrubber
+        "touchy.scrubber.font": (from: "touchy.palette.font"),
+        "touchy.scrubber.step.font": (from: "touchy.button.font"),
+
+        // touchy.section
+        "touchy.section.font": (from: "touchy.palette.font"),
+
+        // touchy.segmented
+        "touchy.segmented.font": (from: "touchy.palette.font"),
+
+        // touchy.text_input
+        "touchy.text_input.font": (from: "touchy.palette.font"),
+
+        // touchy.toast
+        "touchy.toast.font": (from: "touchy.palette.font"),
+
+        // touchy.tooltip
+        "touchy.tooltip.font": (from: "touchy.palette.font"),
+
+        // touchy.transport
+        "touchy.transport.clock.font": (from: "touchy.palette.font"),
+        "touchy.transport.status.font": (from: "touchy.palette.font"),
+    },
+    skins: {
+        // touchy.button
+        "touchy.button.bg": (from: "touchy.skin.raised"),
+        "touchy.button.danger.bg": (from: "touchy.skin.raised"),
+        "touchy.button.ghost.bg": (from: "touchy.skin.raised"),
+        "touchy.button.secondary.bg": (from: "touchy.skin.raised"),
+
+        // touchy.capsule
+        "touchy.capsule.thumb": (from: "touchy.skin.knob"),
+
+        // touchy.checkbox
+        "touchy.checkbox.box": (from: "touchy.skin.sunken"),
+        "touchy.checkbox.box.checked": (from: "touchy.skin.sunken"),
+        "touchy.checkbox.mark": (from: "touchy.skin.mark"),
+
+        // touchy.combo
+        "touchy.combo.bg": (from: "touchy.text_input.bg"),
+
+        // touchy.dpad
+        "touchy.dpad.arm": (from: "touchy.skin.raised"),
+
+        // touchy.dropdown
+        "touchy.dropdown.bg": (from: "touchy.skin.raised"),
+
+        // touchy.gearshift
+        "touchy.gearshift.thumb": (from: "touchy.skin.knob"),
+        "touchy.gearshift.track": (from: "touchy.skin.sunken"),
+
+        // touchy.grid
+        "touchy.grid.bg": (from: "touchy.skin.sunken"),
+        "touchy.grid.chosen": (from: "touchy.skin.raised"),
+
+        // touchy.joystick
+        "touchy.joystick.thumb": (from: "touchy.skin.knob"),
+
+        // touchy.meter
+        "touchy.meter.track": (from: "touchy.skin.sunken"),
+
+        // touchy.number_input
+        "touchy.number_input.bg": (from: "touchy.text_input.bg"),
+        "touchy.number_input.step.bg": (from: "touchy.skin.raised"),
+
+        // touchy.panel
+        "touchy.panel.bg": (from: "touchy.skin.surface"),
+
+        // touchy.popover
+        "touchy.popover.bg": (from: "touchy.skin.surface"),
+
+        // touchy.scroll_area
+        "touchy.scroll_area.thumb": (from: "touchy.skin.knob"),
+        "touchy.scroll_area.track": (from: "touchy.skin.sunken"),
+
+        // touchy.scrubber
+        "touchy.scrubber.area.bg": (from: "touchy.skin.sunken"),
+        "touchy.scrubber.step.bg": (from: "touchy.skin.raised"),
+
+        // touchy.section
+        "touchy.section.header_bg": (from: "touchy.skin.raised"),
+
+        // touchy.segmented
+        "touchy.segmented.bg": (from: "touchy.skin.sunken"),
+        "touchy.segmented.highlight": (from: "touchy.skin.raised"),
+
+        // touchy.slider
+        "touchy.slider.thumb": (from: "touchy.skin.knob"),
+        "touchy.slider.track": (from: "touchy.skin.sunken"),
+
+        // touchy.text_input
+        "touchy.text_input.bg": (from: "touchy.skin.sunken"),
+
+        // touchy.toast
+        "touchy.toast.error.bg": (from: "touchy.skin.surface"),
+        "touchy.toast.info.bg": (from: "touchy.skin.surface"),
+        "touchy.toast.success.bg": (from: "touchy.skin.surface"),
+        "touchy.toast.warning.bg": (from: "touchy.skin.surface"),
+
+        // touchy.toolbar
+        "touchy.toolbar.bg": (from: "touchy.skin.surface"),
+
+        // touchy.tooltip
+        "touchy.tooltip.bg": (from: "touchy.skin.surface"),
+
+        // touchy.transport
+        "touchy.transport.track.thumb": (from: "touchy.skin.knob"),
+        "touchy.transport.track.track": (from: "touchy.skin.sunken"),
+    },
+    state_shades: {
+        "disabled": Alpha(0.35),
+        "focused": Lighter(0.08),
+        "hover": Lighter(0.08),
+        "pressed": Darker(0.08),
+    },
+)

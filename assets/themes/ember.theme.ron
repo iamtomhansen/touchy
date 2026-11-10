@@ -1,0 +1,16 @@
+// Ember: only the palette. Every widget derives its colours from these eight
+// tokens, so a theme this short restyles all of touchy, plus the example's
+// own page, whose tokens also derive from the palette.
+(
+    colors: {
+        "touchy.palette.accent": "#D9622B",
+        // Follows the accent: change the accent and the highlight comes along.
+        "touchy.palette.highlight": (from: "touchy.palette.accent", shade: Lighter(0.25)),
+        "touchy.palette.surface": "#241A16",
+        "touchy.palette.control": "#4A3A33",
+        "touchy.palette.edge": "#6B5146",
+        "touchy.palette.text": "#F7EDE6",
+        "touchy.palette.text.muted": "#B39A8C",
+        "touchy.palette.danger": "#8C1D3A",
+    },
+)

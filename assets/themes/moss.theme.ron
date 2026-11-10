@@ -1,0 +1,6 @@
+// Used by touchy's tests: a second theme to switch to.
+(
+    colors: {
+        "touchy.palette.accent": "#4f8a3c",
+    },
+)

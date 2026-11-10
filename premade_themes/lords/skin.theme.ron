@@ -1,0 +1,36 @@
+// Lords, the skin: carved wood and iron for a fantasy game. Every picture is
+// grey, so a palette tints it: this file says how things are drawn, and
+// `palette.theme.ron` (or any other palette) what colours they're drawn in.
+// Image and font paths are beside this file.
+(
+    fonts: {
+        "touchy.palette.font": "IMFellEnglish-Regular.ttf",
+    },
+    sizes: {
+        // A book face reads small: a size up on touchy's defaults.
+        "touchy.palette.text.size": 16.0,
+        "touchy.palette.control.text.size": 14.0,
+        // The pictures bring their own corners.
+        "touchy.palette.corner_radius": 0.0,
+        "touchy.palette.control.corner_radius": 0.0,
+    },
+    skins: {
+        // Panels, cards, menus and toasts: a studded board. Nine-slice ensures the corners keep
+        // their detail, while the center tiles.
+        "touchy.skin.surface": (image: "surface.png", slice: 12.0),
+        // Buttons and other interactables: a riveted plate, from the brass art turned grey
+        // so the palette colours it. Where the board tiles, the plate stretches: its light
+        // falls in one smooth sweep across the whole button rather than repeating. The art is
+        // drawn at four times size, so stretching has detail to spread; `corner_scale: 0.25`
+        // draws its 24-pixel corners, rivets and all, at 6 pixels on screen.
+        "touchy.skin.raised": (image: "brass.png", slice: 24.0, sides: Stretch, center: Stretch, corner_scale: 0.25),
+        "touchy.skin.raised:hover": (image: "brass_hover.png", slice: 24.0, sides: Stretch, center: Stretch, corner_scale: 0.25),
+        "touchy.skin.raised:pressed": (image: "brass_pressed.png", slice: 24.0, sides: Stretch, center: Stretch, corner_scale: 0.25),
+        // Fields and tracks: recessed into the surface.
+        "touchy.skin.sunken": (image: "sunken.png", slice: 8.0),
+        // Every interactable thumb: a smooth orb.
+        "touchy.skin.knob": (image: "knob.png"),
+        // Literal checkmarks for checkables.
+        "touchy.skin.mark": (image: "mark.png"),
+    },
+)

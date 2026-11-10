@@ -1,0 +1,18 @@
+// Lords, the palette: dark oak, parchment and old gold. Goes with the Lords
+// skin, or over any other.
+(
+    colors: {
+        "touchy.palette.accent": "#8C2F24",
+        "touchy.palette.highlight": "#E2B54C",
+        "touchy.palette.surface": "#3A2A1E",
+        "touchy.palette.control": "#7A5A3A",
+        "touchy.palette.edge": "#9C7A48",
+        "touchy.palette.text": "#F1E4C6",
+        "touchy.palette.text.muted": "#BCA47E",
+        "touchy.palette.danger": "#6E1A14",
+        "touchy.palette.warning": "#D79A2B",
+        "touchy.palette.info": "#4F7A8C",
+        "touchy.palette.success": "#5E8C3A",
+        "touchy.palette.scrim": "#120A05B3",
+    },
+)

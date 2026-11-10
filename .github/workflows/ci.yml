@@ -1,0 +1,102 @@
+
+name: Rust CI
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+# Required permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Prevent duplicate builds
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # --- 1. Code quality and tests ---
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run tests
+        run: cargo test --all-targets
+
+      - name: Run doctests
+        run: cargo test --doc
+
+      - name: Check documentation
+        run: RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --all-features
+
+      - name: Clippy (development)
+        if: github.event_name != 'release'
+        run: cargo clippy --all-targets
+
+      - name: Clippy (strict)
+        if: github.event_name == 'release'
+        run: cargo clippy --all-targets -- -D warnings
+
+  # --- 2. Build WebAssembly demo ---
+  build:
+  # Build and optimize a WebAssembly release (GitHub Pages)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+
+      # Seconds vs. minutes for wasm-bindgen: https://github.com/jetli/wasm-bindgen-action
+      - uses: jetli/wasm-bindgen-action@v0.2.0
+        with:
+          version: 'latest'
+
+      - name: Install binaryren (for wasm-opt)
+        run: sudo apt-get install -y binaryen
+
+      - name: Build WebAssembly release
+        run: cargo build --example showcase --target wasm32-unknown-unknown --release
+
+      - name: Package with wasm-bindgen & wasm-opt
+        run: |
+          mkdir dist
+          wasm-bindgen --out-dir dist --out-name demo --target web \
+            target/wasm32-unknown-unknown/release/examples/showcase.wasm
+          wasm-opt -Oz -o dist/demo_bg.wasm dist/demo_bg.wasm
+          cp wasm/index.html dist/
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  # --- 3. Publish to GitHub pages ---
+  deploy:
+    # Only deploy if both checks and build succeed, and only on the main/release
+    if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+    needs: [checks, build]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
