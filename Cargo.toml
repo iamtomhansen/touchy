@@ -24,9 +24,17 @@ thiserror = "2.0"
 
 [dev-dependencies]
 bevy = { version = "0.20", default-features = false, features = [
-    "bevy_winit", "wayland", "x11", "default_font", "bevy_state",
-    "file_watcher", "system_clipboard", "bevy_sprite", "bevy_sprite_render",
+    "bevy_winit", "default_font", "bevy_state", "system_clipboard", "bevy_sprite",
+    "bevy_sprite_render",
 ] }
+
+# Desktop: window systems and hot reloading.
+[target.'cfg(not(target_arch = "wasm32"))'.dev-dependencies]
+bevy = { version = "0.20", default-features = false, features = ["wayland", "x11", "file_watcher"] }
+
+# Browser: a graphics backend.
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies]
+bevy = { version = "0.20", default-features = false, features = ["webgl2"] }
 
 [profile.dev]
 debug = "line-tables-only"   # backtraces with line numbers, much less to link

@@ -25,9 +25,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
 
       - name: Install Linux dependencies for Bevy
         run: sudo apt-get update && sudo apt-get install -y libwayland-dev libxkbcommon-dev
@@ -65,6 +69,9 @@ jobs:
         with:
           components: rustfmt, clippy
           targets: wasm32-unknown-unknown
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
 
       # Seconds vs. minutes for wasm-bindgen: https://github.com/jetli/wasm-bindgen-action
       - uses: jetli/wasm-bindgen-action@v0.2.0
